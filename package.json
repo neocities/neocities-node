@@ -1,0 +1,32 @@
+{
+  "name": "neocities",
+  "version": "0.0.1",
+  "description": "library for the NeoCities.org API",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:neocities/neocities-node.git"
+  },
+  "keywords": [
+    "neocities"
+  ],
+  "author": "Kyle Drake <kyle@kyledrake.net> (http://kyledrake.net/)",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/neocities/neocities-node/issues"
+  },
+  "dependencies": {
+    "form-data": "*"
+  },
+  "devDependencies": {
+    "browserify": "*",
+    "uglify-js": "*",
+    "istanbul": "*",
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/istanbul test ./node_modules/.bin/mocha -- --reporter list test/*.js",
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/mocha -- --reporter list test/*.js",
+    "browserify": "./node_modules/.bin/browserify ./index.js | ./node_modules/.bin/uglifyjs > neocities.min.js"
+  }
+}
