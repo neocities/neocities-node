@@ -20,13 +20,9 @@
   },
   "devDependencies": {
     "browserify": "*",
-    "uglify-js": "*",
-    "istanbul": "*",
-    "mocha": "*"
+    "uglify-js": "*"
   },
   "scripts": {
-    "test": "./node_modules/.bin/istanbul test ./node_modules/.bin/mocha -- --reporter list test/*.js",
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/mocha -- --reporter list test/*.js",
     "browserify": "./node_modules/.bin/browserify ./index.js | ./node_modules/.bin/uglifyjs > neocities.min.js"
   }
 }
