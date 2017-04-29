@@ -24,16 +24,16 @@ NeoCities.prototype.get = function(method, args, callback) {
     method: 'get',
     host: this.url.hostname,
     port: this.url.port,
-    path: path,
+    path,
     auth: this.user+':'+this.pass
-  }, function(res) {
+  }, res => {
     var body = ''
 
-    res.on('data', function (chunk) {
+    res.on('data', chunk => {
       body += chunk
     })
 
-    res.on('end', function() {
+    res.on('end', () => {
       var resObj = JSON.parse(body)
       callback(resObj)
     })
@@ -47,7 +47,7 @@ NeoCities.prototype.info = function(sitename, callback) {
   if(typeof sitename == 'function')
     callback = sitename
   else if(typeof sitename == 'string')
-    args = {sitename: sitename}
+    args = {sitename}
 
   this.get('info', args, callback)
 }
@@ -66,14 +66,14 @@ NeoCities.prototype.post = function(method, args, callback) {
     path: '/api/'+method,
     headers: form.getHeaders(),
     auth: this.user+':'+this.pass
-  }, function(res) {
+  }, res => {
     var body = ''
 
-    res.on('data', function (chunk) {
+    res.on('data', chunk => {
       body += chunk
     })
 
-    res.on('end', function() {
+    res.on('end', () => {
       var resObj = JSON.parse(body)
       callback(resObj)
     })
