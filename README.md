@@ -4,7 +4,7 @@ A node.js library for interacting with the [NeoCities](https://neocities.org/api
 ## Installation
 
 ```
-  $ npm install neocities --global
+$ npm install neocities
 ```
 
 ## Usage
