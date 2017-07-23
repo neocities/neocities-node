@@ -23,7 +23,8 @@ var api = new NeoCities('YOURUSERNAME', 'YOURPASSWORD')
 
 api.upload([
   {name: 'derp.js', path: './index.js'}
-], function(resp) {
+], function(error, resp) {
+  console.error(error)
   console.log(resp)
 })
 ```
@@ -31,7 +32,8 @@ api.upload([
 ### Deleting files from your site
 
 ``` javascript
-api.delete(['derp.js'], function(resp) {
+api.delete(['derp.js'], function(error, resp) {
+  console.error(error)
   console.log(resp)
 })
 ```
@@ -39,13 +41,15 @@ api.delete(['derp.js'], function(resp) {
 ### Get site info (hits, et cetera)
 
 ``` javascript
-api.info(function(resp) {
+api.info(function(error, resp) {
+  console.error(error)
   console.log(resp)
 })
 ```
 
 ``` javascript
-api.info('youpi', function(resp) {
+api.info('youpi', function(error, resp) {
+  console.error(error)
   console.log(resp)
 })
 ```
