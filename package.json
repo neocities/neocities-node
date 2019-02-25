@@ -1,28 +1,29 @@
 {
-  "name": "neocities",
-  "version": "0.0.3",
-  "description": "library for the NeoCities.org API",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:neocities/neocities-node.git"
-  },
-  "keywords": [
-    "neocities"
-  ],
-  "author": "Kyle Drake <kyle@kyledrake.net> (http://kyledrake.net/)",
-  "license": "BSD-2-Clause",
-  "bugs": {
-    "url": "https://github.com/neocities/neocities-node/issues"
-  },
-  "dependencies": {
-    "form-data": "^2.1.4"
-  },
-  "devDependencies": {
-    "browserify": "^14.3.0",
-    "uglify-js": "^3.0.4"
-  },
-  "scripts": {
-    "browserify": "./node_modules/.bin/browserify ./index.js | ./node_modules/.bin/uglifyjs > neocities.min.js"
-  }
+    "name": "neocities-extended",
+    "version": "0.0.4",
+    "description": "Extended library for the Neocities.org API",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:thatcomputerguy0101/neocities-node-extended.git"
+    },
+    "keywords": [
+        "neocities",
+        "extended"
+    ],
+    "author": "ThatComputerGuy <thatcomputerguy0101@gmail.com> (http://thatcomputerguy.neocities.org/about)",
+    "license": "BSD-2-Clause",
+    "bugs": {
+        "url": "https://github.com/thatcomputerguy0101/neocities-node-extended/issues"
+    },
+    "dependencies": {
+        "form-data": "^2.3.3"
+    },
+    "devDependencies": {
+        "browserify": "^14.3.0",
+        "uglify-js": "^3.0.4"
+    },
+    "scripts": {
+        "browserify": "./node_modules/.bin/browserify ./index.js | ./node_modules/.bin/uglifyjs > neocities.min.js"
+    }
 }
