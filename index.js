@@ -7,10 +7,10 @@ var qs       = require('querystring');
 var formData = require('form-data');
 
 function NeoCities(user, pass, opts) {
-  if (typeof pass == "object" || pass == undefined) {
+  if (typeof pass == 'object' || pass == undefined) {
     this.key = user;
   }
-  this.opts = opts || (typeof pass == "object" ? pass : {})
+  this.opts = opts || (typeof pass == 'object' ? pass : {})
   if (!this.opts.key && !this.key) {
     this.user = user;
     this.pass = pass;
@@ -22,7 +22,7 @@ function NeoCities(user, pass, opts) {
   this.siteurl = this.opts.siteurl ? url.parse(this.ops.siteurl) : null;
   this.client = this.url.protocol == 'https:' ? https : http
   if (this.opts.key && !this.key) {
-    this.get("key", null, res => {this.key = res.api_key; if (typeof this.opts.key == "function") this.opts.key(this)}, user, pass);
+    this.get('key', null, res => {this.key = res.api_key; if (typeof this.opts.key == 'function') this.opts.key(this)}, user, pass);
   }
 }
 
@@ -33,7 +33,7 @@ NeoCities.prototype.download = function(files, callback) {
   
   if (!this.siteurl)
     this.info((resp) => {
-      that.siteurl = url.parse(that.url.protocol + "//" + (resp.info.domain || resp.info.sitename + "." + that.url.hostname));
+      that.siteurl = url.parse(that.url.protocol + '//' + (resp.info.domain || resp.info.sitename + '.' + that.url.hostname));
       dwnldFile();
     });
   else dwnldFile();
@@ -42,43 +42,43 @@ NeoCities.prototype.download = function(files, callback) {
     if (i < files.length) {
       if (files[i].path) {
         var file = fs.createWriteStream(files[i].path);
-        file.on("finish", () => file.close((dwnldFile)));
-        that.client.get(that.siteurl.href + files[i].name.replace(/^\/?/, "/"), data => data.pipe(file));
+        file.on('finish', () => file.close((dwnldFile)));
+        that.client.get(that.siteurl.href + files[i].name.replace(/^\/?/, '/'), data => data.pipe(file));
       }
 //            else {
 //                returning = true;
-//                that.client.request(that.siteurl.href + files[i].name.replace(/^\/?/, "/"), data => returnData[files[i].name] = data);
+//                that.client.request(that.siteurl.href + files[i].name.replace(/^\/?/, '/'), data => returnData[files[i].name] = data);
 //            }
       i ++;
     }
-    else if (typeof callback == "function" && !returning)
-      callback({status:"success"});
+    else if (typeof callback == 'function' && !returning)
+      callback({status:'success'});
   }
 }
 
 NeoCities.prototype.get = function(method, args, callback) {
   var opts = {
-    method: "get",
+    method: 'get',
     host: this.url.hostname,
     port: this.url.port,
-    path: "/api/" + method + (args ? "?" + qs.stringify(args) : "")
+    path: '/api/' + method + (args ? '?' + qs.stringify(args) : '')
   };
   
   if (!this.key) {
-    opts.auth = this.user + ":" + this.pass;
+    opts.auth = this.user + ':' + this.pass;
   }
   else {
-    opts.headers = {Authorization: "Bearer " + this.key};
+    opts.headers = {Authorization: 'Bearer ' + this.key};
   }
 
   var request = this.client.request(opts, function(res) {
-    var body = "";
+    var body = '';
 
-    res.on("data", function (chunk) {
+    res.on('data', function (chunk) {
       body += chunk;
     })
 
-    res.on("end", function() {
+    res.on('end', function() {
       var resObj = JSON.parse(body);
       callback(resObj);
     })
@@ -89,23 +89,23 @@ NeoCities.prototype.get = function(method, args, callback) {
 NeoCities.prototype.info = function(sitename, callback) {
   var args = null;
   
-  if(typeof sitename == "function")
+  if(typeof sitename == 'function')
     callback = sitename;
-  else if(typeof sitename == "string")
+  else if(typeof sitename == 'string')
     args = {sitename: sitename};
   
-  this.get("info", args, callback);
+  this.get('info', args, callback);
 }
 
 NeoCities.prototype.list = function(path, callback) {
   var args = null;
   
-  if (typeof path == "function")
+  if (typeof path == 'function')
     callback = path;
-  else if (typeof path == "string")
+  else if (typeof path == 'string')
     args = {path: path};
   
-  this.get("list", args, callback);
+  this.get('list', args, callback);
 }
 
 NeoCities.prototype.post = function(method, args, callback) {
@@ -115,28 +115,28 @@ NeoCities.prototype.post = function(method, args, callback) {
     form.append(args[i].name, args[i].value);
   
   var opts = {
-    method: "post",
+    method: 'post',
     host: this.url.hostname,
     port: this.url.port,
-    path: "/api/" + method,
+    path: '/api/' + method,
     headers: form.getHeaders()
   }
   
   if (!this.key) {
-    opts.auth = this.user + ":" + this.pass;
+    opts.auth = this.user + ':' + this.pass;
   }
   else {
-    opts.headers.Authorization = "Bearer " + this.key;
+    opts.headers.Authorization = 'Bearer ' + this.key;
   }
   
   var request = this.client.request(opts, function(res) {
-    var body = "";
+    var body = '';
     
-    res.on("data", function (chunk) {
+    res.on('data', function (chunk) {
       body += chunk;
     })
     
-    res.on("end", function() {
+    res.on('end', function() {
       var resObj = JSON.parse(body);
       callback(resObj);
     })
@@ -149,9 +149,9 @@ NeoCities.prototype.delete = function(filenames, callback) {
   var args = [];
   
   for(var i = 0; i < filenames.length; i ++)
-    args.push({name: "filenames[]", value: filenames[i]});
+    args.push({name: 'filenames[]', value: filenames[i]});
   
-  this.post("delete", args, callback);
+  this.post('delete', args, callback);
 }
 
 NeoCities.prototype.upload = function(files, callback) {
@@ -160,11 +160,11 @@ NeoCities.prototype.upload = function(files, callback) {
   for(var i = 0; i < files.length; i ++)
     args.push({name: files[i].name, value: fs.createReadStream(files[i].path)});
   
-  this.post("upload", args, callback);
+  this.post('upload', args, callback);
 }
 
 NeoCities.prototype.push = function(localPath, webPath, excludes, callback) {
-  if (typeof excludes == "function") {
+  if (typeof excludes == 'function') {
     callback = excludes;
     excludes = [];
   }
@@ -179,7 +179,7 @@ NeoCities.prototype.push = function(localPath, webPath, excludes, callback) {
     function parseFiles(err, dirContents) {
       dirContents = dirContents.map(file => path.resolve(dir, file));
       var uploadArgs = dirContents.filter(file => {
-        if (excludes.includes(path.relative(localPath, file)) || excludes.some(exclude => (exclude.constructor == RegExp && file.match(exclude)) || (typeof exclude == "function" && exclude(file)))) {
+        if (excludes.includes(path.relative(localPath, file)) || excludes.some(exclude => (exclude.constructor == RegExp && file.match(exclude)) || (typeof exclude == 'function' && exclude(file)))) {
           return false;
         }
         var fileData = fs.statSync(file);
@@ -187,7 +187,7 @@ NeoCities.prototype.push = function(localPath, webPath, excludes, callback) {
           list(file);
         else
           return true;
-      }).map(file => ({path: file, name: webPath.replace(/[/\\]?$/, "/") + path.relative(path.resolve(localPath), file)}))
+      }).map(file => ({path: file, name: webPath.replace(/[/\\]?$/, '/') + path.relative(path.resolve(localPath), file)}))
       activePaths.splice(activePaths.indexOf(dir), 1)
       that.upload(uploadArgs, activePaths.length ? () => {} : callback);
     }
@@ -195,7 +195,7 @@ NeoCities.prototype.push = function(localPath, webPath, excludes, callback) {
 }
 
 NeoCities.prototype.pull = function(localPath, webPath, excludes, callback) {
-  if (typeof excludes == "function") {
+  if (typeof excludes == 'function') {
     callback = excludes;
     excludes = [];
   }
@@ -203,8 +203,8 @@ NeoCities.prototype.pull = function(localPath, webPath, excludes, callback) {
   this.list(filterDirs);
   
   function filterDirs(files) {
-    if (files.result == "success") {
-      that.download(Array.prototype.filter.apply(files, [file => !file.is_directory && (!path.relative(webPath, file.path).match(/^\.\.[/\\]/) || webPath == "/") && !excludes.includes(path.relative(webPath, file.path)) && !excludes.any(exclude => (exclude.prototype == RegExp && file.path.match(exclude)) || (typeof exclude == "function" && exclude(file.path)) || (typeof exclude == "string" && path.relative(exclude, path.relative(webPath, file.path)).match(/^\.\.[/\\]/)))]).map(file => ({path: localPath.replace(/[/\\]?$/, "/") + path.relative(webPath, file.path), name: file})), callback);
+    if (files.result == 'success') {
+      that.download(Array.prototype.filter.apply(files, [file => !file.is_directory && (!path.relative(webPath, file.path).match(/^\.\.[/\\]/) || webPath == '/') && !excludes.includes(path.relative(webPath, file.path)) && !excludes.any(exclude => (exclude.prototype == RegExp && file.path.match(exclude)) || (typeof exclude == 'function' && exclude(file.path)) || (typeof exclude == 'string' && path.relative(exclude, path.relative(webPath, file.path)).match(/^\.\.[/\\]/)))]).map(file => ({path: localPath.replace(/[/\\]?$/, '/') + path.relative(webPath, file.path), name: file})), callback);
     }
   }
 }
