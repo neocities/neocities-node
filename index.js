@@ -4,7 +4,7 @@ var https    = require('https')
 var path     = require('path')
 var url      = require('url')
 var qs       = require('querystring')
-var formData = require('form-data')
+var FormData = require('form-data')
 
 function NeoCities(user, pass, opts) {
   if (typeof pass == 'object' || pass == undefined) {
@@ -112,7 +112,7 @@ NeoCities.prototype.list = function(path, callback) {
 }
 
 NeoCities.prototype.post = function(method, args, callback) {
-  var form = new formData()
+  var form = new FormData()
   
   for(var i = 0; i < args.length; i ++)
     form.append(args[i].name, args[i].value)
