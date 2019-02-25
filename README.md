@@ -1,10 +1,10 @@
-# Neocities-Extended Node.js Client Library
-A node.js library for interacting with the [Neocities](https://neocities.org/api) api that actually has more capabilities than the original api itself.
+# NeoCities Node.js Client Library
+A node.js library for interacting with the [NeoCities](https://neocities.org/api) api.
 
 ## Installation
 
 ```
-$ npm install neocities-extended
+$ npm install neocities
 ```
 
 ## Usage
@@ -12,8 +12,8 @@ $ npm install neocities-extended
 First, require the library and initialize:
 
 ``` javascript
-var Neocities = require('neocities-extended')
-var api = new Neocities('YOURUSERNAME', 'YOURPASSWORD')
+var NeoCities = require('neocities')
+var api = new NeoCities('YOURUSERNAME', 'YOURPASSWORD')
 ```
 
 ### Uploading files to your site

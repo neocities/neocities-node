@@ -6,7 +6,7 @@ var fs       = require('fs'),
     qs       = require('querystring'),
     formData = require('form-data');
 
-function Neocities(user, pass, opts) {
+function NeoCities(user, pass, opts) {
     if (typeof pass == "object" || pass == undefined) {
         this.key = user;
     }
@@ -18,7 +18,7 @@ function Neocities(user, pass, opts) {
     else {
         this.opts.key = this.opts.key || true;
     }
-    this.url = url.parse(this.opts.url || 'https://Neocities.org');
+    this.url = url.parse(this.opts.url || 'https://neocities.org');
     this.siteurl = this.opts.siteurl ? url.parse(this.ops.siteurl) : null;
     this.client = this.url.protocol == 'https:' ? https : http
     if (this.opts.key && !this.key) {
@@ -26,7 +26,7 @@ function Neocities(user, pass, opts) {
     }
 }
 
-Neocities.prototype.download = function(files, callback) {
+NeoCities.prototype.download = function(files, callback) {
     var i = 0;
     var that = this;
     var returnData = {}, returning = false;
@@ -56,7 +56,7 @@ Neocities.prototype.download = function(files, callback) {
     }
 }
 
-Neocities.prototype.get = function(method, args, callback, user, pass) {
+NeoCities.prototype.get = function(method, args, callback, user, pass) {
     var opts = {
         method: "get",
         host: this.url.hostname,
@@ -86,7 +86,7 @@ Neocities.prototype.get = function(method, args, callback, user, pass) {
     request.end();
 }
 
-Neocities.prototype.info = function(sitename, callback) {
+NeoCities.prototype.info = function(sitename, callback) {
     var args = null;
     
     if(typeof sitename == "function")
@@ -97,7 +97,7 @@ Neocities.prototype.info = function(sitename, callback) {
     this.get("info", args, callback);
 }
 
-Neocities.prototype.list = function(path, callback) {
+NeoCities.prototype.list = function(path, callback) {
     var args = null;
     
     if (typeof path == "function")
@@ -108,7 +108,7 @@ Neocities.prototype.list = function(path, callback) {
     this.get("list", args, callback);
 }
 
-Neocities.prototype.post = function(method, args, callback) {
+NeoCities.prototype.post = function(method, args, callback) {
     var form = new formData();
     
     for(var i = 0; i < args.length; i ++)
@@ -145,7 +145,7 @@ Neocities.prototype.post = function(method, args, callback) {
     form.pipe(request);
 }
 
-Neocities.prototype.delete = function(filenames, callback) {
+NeoCities.prototype.delete = function(filenames, callback) {
     var args = [];
     
     for(var i = 0; i < filenames.length; i ++)
@@ -154,7 +154,7 @@ Neocities.prototype.delete = function(filenames, callback) {
     this.post("delete", args, callback);
 }
 
-Neocities.prototype.upload = function(files, callback) {
+NeoCities.prototype.upload = function(files, callback) {
     var args = [];
     
     for(var i = 0; i < files.length; i ++)
@@ -163,7 +163,7 @@ Neocities.prototype.upload = function(files, callback) {
     this.post("upload", args, callback);
 }
 
-Neocities.prototype.push = function(localPath, webPath, excludes, callback) {
+NeoCities.prototype.push = function(localPath, webPath, excludes, callback) {
     if (typeof excludes == "function") {
         callback = excludes;
         excludes = [];
@@ -194,7 +194,7 @@ Neocities.prototype.push = function(localPath, webPath, excludes, callback) {
     }
 }
 
-Neocities.prototype.pull = function(localPath, webPath, excludes, callback) {
+NeoCities.prototype.pull = function(localPath, webPath, excludes, callback) {
     if (typeof excludes == "function") {
         callback = excludes;
         excludes = [];
@@ -209,4 +209,4 @@ Neocities.prototype.pull = function(localPath, webPath, excludes, callback) {
     }
 }
 
-module.exports = Neocities;
+module.exports = NeoCities;
