@@ -3,16 +3,19 @@ A node.js library for interacting with the [Neocities](https://neocities.org/api
 
 ## Installation
 
+WARNING - This module is not yet on NPM; the following command will not work
 ```
 $ npm install neocities-extended
 ```
+
+Instead, clone this repository where you want it to be installed, and reference the folder directly in the require statement.
 
 ## Usage
 
 First, require the library and initialize:
 
 ``` javascript
-var Neocities = require('neocities-extended')
+var Neocities = require('neocities-extended') // or reference to the folder
 var api = new Neocities('YOURUSERNAME', 'YOURPASSWORD')
 ```
 
