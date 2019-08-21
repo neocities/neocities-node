@@ -34,11 +34,12 @@ NeoCities.prototype.download = function(files, callback) {
   var that = this
   var returning = false
   
-  if (!this.siteurl)
+  if (!this.siteurl) {
     this.info(function (resp) {
       that.siteurl = url.parse(that.url.protocol + '//' + (resp.info.domain || resp.info.sitename + '.' + that.url.hostname))
       dwnldFile()
     })
+  }
   else dwnldFile()
   
   function dwnldFile() {
@@ -46,11 +47,13 @@ NeoCities.prototype.download = function(files, callback) {
       if (files[i].path) {
         var file = fs.createWriteStream(files[i].path)
         file.on('finish', function() {file.close((dwnldFile))})
-        that.client.get(that.siteurl.href + files[i].name.replace(/^\/?/, '/'), function(data) {return data.pipe(file)})
+        that.client.get(that.siteurl.href + files[i].name.replace(/^\/?/, '/'),
+                        function(data) {return data.pipe(file)})
       }
 //            else {
 //                returning = true
-//                that.client.request(that.siteurl.href + files[i].name.replace(/^\/?/, '/'), function (data) {returnData[files[i].name] = data})
+//                that.client.request(that.siteurl.href + files[i].name.replace(/^\/?/, '/'),
+// .                                  function (data) {returnData[files[i].name] = data})
 //            }
       i ++
     }
@@ -179,23 +182,38 @@ NeoCities.prototype.push = function(localPath, webPath, excludes, callback) {
   var activePaths = []
   var that = this
   excludes = excludes.map(function(dir) {return path.resolve(localPath, dir)})
+  
   list(localPath)
   
   function list(dir) {
     activePaths.push(dir)
     fs.readdir(dir, parseFiles)
+    
     function parseFiles(err, dirContents) {
       dirContents = dirContents.map(function(file) {return path.resolve(dir, file)})
       var uploadArgs = dirContents.filter(function(file) {
-        if (excludes.includes(path.relative(localPath, file)) || excludes.some(function(exclude) {return (exclude.constructor == RegExp && file.match(exclude)) || (typeof exclude == 'function' && exclude(file))})) {
+        if (excludes.includes(path.relative(localPath, file)) ||
+            excludes.some(function(exclude) {
+              return (exclude.constructor == RegExp && file.match(exclude)) ||
+                     (typeof exclude == 'function' && exclude(file))
+            })) {
           return false
         }
+        
         var fileData = fs.statSync(file)
-        if (fileData.isDirectory())
+        
+        if (fileData.isDirectory()) {
           list(file)
-        else
+        }
+        else {
           return true
-      }).map(function(file) {return {path: file, name: webPath.replace(/[/\\]?$/, '/') + path.relative(path.resolve(localPath), file)}})
+        }
+      }).map(function(file) {
+        return {
+          path: file, name: webPath.replace(/[/\\]?$/, '/') +
+                path.relative(path.resolve(localPath), file)
+        }
+      })
       activePaths.splice(activePaths.indexOf(dir), 1)
       that.upload(uploadArgs, activePaths.length ? function() {} : callback)
     }
@@ -218,10 +236,20 @@ NeoCities.prototype.pull = function(localPath, webPath, excludes, callback) {
   function filterDirs(files) {
     if (files.result == 'success') {
       that.download(Array.prototype.filter.call(files, function(file)  {
-        return !file.is_directory && (!path.relative(webPath, file.path).match(/^\.\.[/\\]/) || webPath == '/') && !excludes.includes(path.relative(webPath, file.path)) && !excludes.any(function(exclude) {
-          return (exclude.prototype == RegExp && file.path.match(exclude)) || (typeof exclude == 'function' && exclude(file.path)) || (typeof exclude == 'string' && path.relative(exclude, path.relative(webPath, file.path)).match(/^\.\.[/\\]/))
-        })
-      }).map(function(file) {return ({path: localPath.replace(/[/\\]?$/, '/') + path.relative(webPath, file.path), name: file})}), callback)
+        return !file.is_directory &&
+               (!path.relative(webPath, file.path).match(/^\.\.[/\\]/) || webPath == '/') &&
+               !excludes.includes(path.relative(webPath, file.path)) &&
+               !excludes.any(function(exclude) {
+                 return (exclude.prototype == RegExp && file.path.match(exclude)) ||
+                        (typeof exclude == 'function' && exclude(file.path)) ||
+                        (typeof exclude == 'string' && path.relative(exclude, path.relative(webPath, file.path)).match(/^\.\.[/\\]/))
+               })
+      }).map(function(file) {
+        return {
+          path: localPath.replace(/[/\\]?$/, '/') + path.relative(webPath, file.path),
+          name: file
+        }
+      }), callback)
     }
   }
 }
