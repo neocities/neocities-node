@@ -3,9 +3,12 @@ A node.js library for interacting with the [NeoCities](https://neocities.org/api
 
 ## Installation
 
+WARNING - This module is not yet on NPM; the following command will not work
 ```
 $ npm install neocities
 ```
+
+Instead, clone this repository where you want it to be installed, and reference the folder directly in the require statement.
 
 ## Usage
 
@@ -75,13 +78,13 @@ api.info('youpi', function(resp) {
 The API key is a more secure way to upload data, since it doesn't store or send your username or password. First, Log in normally with a callback for the key option. (This then uses the key once it is aquired instead of your username and password.)
 
 ``` javascript
-var api = new Neocities('YOURUSERNAME', 'YOURPASSWORD', {key: function(key) {/* store your key here */}})
+var api = new NeoCities('YOURUSERNAME', 'YOURPASSWORD', {key: function(key) {/* store your key here */}})
 ```
 
 Then, use the key instead of the username or password the next time you log in.
 
 ``` javascript
-var api = new Neocities('YOURAPIKEY')
+var api = new NeoCities('YOURAPIKEY')
 ```
 
 ### Pushing a folder
