@@ -3,12 +3,9 @@ A node.js library for interacting with the [NeoCities](https://neocities.org/api
 
 ## Installation
 
-WARNING - This module is not yet on NPM; the following command will not work
 ```
 $ npm install neocities
 ```
-
-Instead, clone this repository where you want it to be installed, and reference the folder directly in the require statement.
 
 ## Usage
 
