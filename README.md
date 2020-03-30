@@ -75,7 +75,7 @@ api.info('youpi', function(resp) {
 
 ### Use an API Key
 
-The API key is a more secure way to upload data, since it doesn't store or send your username or password. First, Log in normally with a callback for the key option. (This then uses the key once it is aquired instead of your username and password.)
+The API key is a more secure way to upload data, since it doesn't store or send your username or password. First, Log in normally with a callback for the key option. (This then uses the key once it is acquired instead of your username and password.)
 
 ``` javascript
 var api = new NeoCities('YOURUSERNAME', 'YOURPASSWORD', {key: function(key) {/* store your key here */}})
