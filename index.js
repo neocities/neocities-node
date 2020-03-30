@@ -30,6 +30,7 @@ function NeoCities(user, pass, opts) {
 }
 
 NeoCities.prototype.download = function(files, callback) {
+  console.log(files)
   var i = 0
   var that = this
   var returning = false
@@ -230,26 +231,41 @@ NeoCities.prototype.pull = function(localPath, webPath, excludes, callback) {
     callback = excludes
     excludes = []
   }
-  var that = this
-  this.list(filterDirs)
   
-  function filterDirs(files) {
-    if (files.result == 'success') {
-      that.download(Array.prototype.filter.call(files, function(file)  {
-        return !file.is_directory &&
-               (!path.relative(webPath, file.path).match(/^\.\.[/\\]/) || webPath == '/') &&
-               !excludes.includes(path.relative(webPath, file.path)) &&
-               !excludes.any(function(exclude) {
-                 return (exclude.prototype == RegExp && file.path.match(exclude)) ||
-                        (typeof exclude == 'function' && exclude(file.path)) ||
-                        (typeof exclude == 'string' && path.relative(exclude, path.relative(webPath, file.path)).match(/^\.\.[/\\]/))
-               })
-      }).map(function(file) {
-        return {
-          path: localPath.replace(/[/\\]?$/, '/') + path.relative(webPath, file.path),
-          name: file
-        }
-      }), callback)
+  var that = this
+  
+  fs.exists(localPath, createIfFailed)
+  
+  function createIfFailed(pathExists) {
+    if (!pathExists) {
+      fs.mkdir(localPath, {}, startDownload)
+    }
+    else {
+      startDownload()
+    }
+  }
+  
+  function startDownload() {
+    that.list(filterDirs)
+
+    function filterDirs(files) {
+      if (files.result == 'success') {
+        that.download(files.files.filter(function(file)  {
+          return !file.is_directory &&
+                 (!path.relative(webPath, file.path).match(/^\.\.[/\\]/) || webPath == '/') &&
+                 !excludes.includes(path.relative(webPath, file.path)) &&
+                 !excludes.some(function(exclude) {
+                   return (exclude.prototype == RegExp && file.path.match(exclude)) ||
+                          (typeof exclude == 'function' && exclude(file.path)) ||
+                          (typeof exclude == 'string' && path.relative(exclude, path.relative(webPath, file.path)).match(/^\.\.[/\\]/))
+                 })
+        }).map(function(file) {
+          return {
+            path: localPath.replace(/[/\\]?$/, '/') + path.relative(webPath, file.path),
+            name: file.path
+          }
+        }), callback)
+      }
     }
   }
 }
