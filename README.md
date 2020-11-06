@@ -23,8 +23,20 @@ var api = new NeoCities('YOURUSERNAME', 'YOURPASSWORD')
 
 api.upload([
   {name: 'derp.js', path: './index.js'}
-], function(resp) {
+           ], function(resp) {
   console.log(resp)
+})
+```
+
+### Downloading files from your site
+
+``` javascript
+// site path is derp.js, saved on client as index.js
+
+api.download([
+    {name: 'derp.js', path: 'index.js'}
+             ], function(resp) {
+    console.log(resp)
 })
 ```
 
@@ -33,6 +45,14 @@ api.upload([
 ``` javascript
 api.delete(['derp.js'], function(resp) {
   console.log(resp)
+})
+```
+
+### List the files on your site
+
+``` javascript
+api.list('dirname', function(resp) {
+    console.log(resp)
 })
 ```
 
@@ -48,4 +68,37 @@ api.info(function(resp) {
 api.info('youpi', function(resp) {
   console.log(resp)
 })
+```
+
+### Use an API Key
+
+The API key is a more secure way to upload data, since it doesn't store or send your username or password. First, Log in normally with a callback for the key option. (This then uses the key once it is acquired instead of your username and password.)
+
+``` javascript
+var api = new NeoCities('YOURUSERNAME', 'YOURPASSWORD', {key: function(key) {/* store your key here */}})
+```
+
+Then, use the key instead of the username or password the next time you log in.
+
+``` javascript
+var api = new NeoCities('YOURAPIKEY')
+```
+
+### Pushing a folder
+
+``` javascript
+// foo is the local folder, images is what it will be named on your site
+// hidden.json is not uploaded, nor any file ending with .conf.json
+
+api.push('foo/', 'images/', ['hidden.json', /\.conf\.json$/])
+```
+
+### Pulling a folder
+
+Similar to download, but for folders
+
+``` javascript
+// same argument syntax as push
+
+api.pull('foo/', 'images', ['site.png'])
 ```
