@@ -93,7 +93,7 @@ var api = new Neocities('YOURAPIKEY')
 // foo is the local folder, images is what it will be named on your site
 // hidden.json is not uploaded, nor any file ending with .conf.json
 
-api.push('foo/', 'images/', ['hidden.json', /.conf.json$/])
+api.push('foo/', 'images/', ['hidden.json', /\.conf\.json$/])
 ```
 
 ### Pulling a folder
